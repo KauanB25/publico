@@ -1,1 +1,505 @@
 
+#include <stdio.h>
+#include <stdlib.h>
+#include <time.h>
+//simulação de um D20
+int D20(void){
+    int rolagem;
+    rolagem=rand() % 21;
+    while(rolagem==0){
+        rolagem=rand() % 21;
+    }
+    return rolagem;
+   }
+//simulação d4
+int D4(void){
+    int rolagem;
+    rolagem=rand() % 5;
+    while(rolagem==0){
+        rolagem=rand() % 5;
+    }
+   return rolagem;
+}
+//simulação d6
+int D6(void){
+    int rolagem;
+    rolagem=rand() % 7;
+    while(rolagem==0){
+        rolagem=rand() % 7;
+    }
+    return rolagem;
+}
+
+int D8(void){
+    int rolagem;
+    rolagem=rand() % 9;
+    while(rolagem==0){
+        rolagem=rand() % 9;
+    }
+    return rolagem;
+   }
+// essa função considera a distribuição dos pontos como a rolagem de 4 d6,somando todos os valores e subtraindo o menor
+int atributo(){
+     int menor=0,dado=0,i,soma=0;
+    
+    srand(time(NULL));
+    for(i=0;i<4;i++){
+        dado = rand() % 7;
+        if(dado==0){
+        while(dado==0){
+        dado = rand() % 7;
+        }}
+        soma=soma+dado;
+        if(i==0){
+            menor=dado;
+        }else{
+            if(dado<menor){
+                menor=dado;
+            }
+        }}
+    soma=soma-menor;
+        return soma;
+    }
+
+// função de combate    
+int combate(int HP_inimigo,int hp,int teste,int modD,int modI,int modF,int classe_num){
+  int vericacao=0,acao,escolha,esquiva,ataqueInimigo,defesa,mp=4+modI,dano, rolagem;
+  
+  if(classe_num==1 || classe_num==2){
+  printf("\n");
+  
+  printf("Você encontro um inimigo!O que vai fazer?\n1-atacar");
+  scanf("%d",&acao);}
+  
+  while (vericacao!=1 && hp>0 && classe_num==1 || classe_num==2){
+   if(classe_num==1){
+      dano=D4();
+  }
+  if(classe_num==2){
+      dano=D6();
+  }
+    if( acao==1){
+        rolagem=D20();
+        if(rolagem>=teste){
+            if(rolagem==20){
+                printf("CRÍTICO!\n");
+                HP_inimigo=HP_inimigo - (dano * 2);
+                if(HP_inimigo<=0){
+                printf("O inimigo ficou com 0 de vida\n");
+                return hp;
+            }
+            else{
+            HP_inimigo= HP_inimigo - dano;
+            if(HP_inimigo<=0){
+                printf("O inimigo ficou com 0 de vida\n");
+                return hp;
+            }}}}}
+            
+    HP_inimigo= HP_inimigo - dano;
+    if(HP_inimigo<=0){
+        printf("O inimigo ficou com 0 de vida\n");
+        return hp;}
+    printf("Você tirou %d no dado, a dificuldade é %d, o hp do inimigo é %d \n",rolagem,teste,HP_inimigo);
+    if(HP_inimigo>0){
+        printf("O inimigo de ataca! o que você faz?1-Esquivar(dificuldade 15) 2-defender\n");
+        scanf("%d", &escolha);
+        esquiva=D20()+modD;
+         if (esquiva>=20){
+                esquiva=20;
+            }
+            if (esquiva<=1){
+                esquiva=1;
+            }
+        ataqueInimigo=D20();
+        
+        if(escolha==1){
+            if(esquiva<15){
+            hp=hp - 1;
+            if(hp<=0){
+                 return hp;
+            }
+            printf("Você tirou %d.Esquiva falhou! Você levou dano. Sua vida atual é %d  \n",esquiva,hp);
+            }
+            else{
+            printf("Você tirou %d.Esquiva bem-sucessedida  \n",esquiva);
+             }}
+        
+        if(escolha==2 || acao==1){
+            defesa=D20()+modF;
+            if (defesa>=20){
+                defesa=20;
+            }
+            if (defesa<=1){
+                defesa=1;
+            }
+            if(ataqueInimigo>defesa){
+                hp= hp - 1;
+                 if(hp<=0){
+                 return hp;}
+            
+                printf("Você tirou %d,o inimigo tirou %d.Você não conseguiu se defender.Seu hp atual é %d \n",defesa,ataqueInimigo,hp);}
+            }
+            else{
+                printf("Você tirou %d, o inimigo tirou %d.Sua defesa foi bem-sucessedida! \n",defesa,ataqueInimigo);
+            }
+        }}
+    
+    // mago
+    while (vericacao!=1 && hp>0 && classe_num==3){    
+    acao=0;
+    //ok
+    if(classe_num==3){
+    printf("\n");
+    printf("Como vai atacar?\n1-ataque físico \n2-magia");
+    scanf("%d",&acao);
+    if(acao==2 && mp<=0 && HP_inimigo>0){
+      printf("Sem mana.Será usado um ataque físico.\n");
+        acao= 1;}}
+    //ok
+    
+    //ok
+    if( acao==1){
+        dano=D4();
+        rolagem=D20();
+        if(rolagem>=teste){
+            if(rolagem==20){
+                printf("CRÍTICO!\n");
+                HP_inimigo=HP_inimigo - (dano * 2);
+                if(HP_inimigo<=0){
+                printf("O inimigo ficou com 0 de vida\n");
+                return hp;} 
+            }
+            else{
+            HP_inimigo= HP_inimigo - dano;
+            if(HP_inimigo<=0){
+                printf("O inimigo ficou com 0 de vida\n");
+                return hp;}
+                }
+                }
+    }
+    //ok
+    
+    if(acao==2){
+    printf("Sua mana atual é %d ",mp);
+    printf("Você pode usar a magia:3-missel mágico(alto dano,-2mp,pode falhar)\n");
+    scanf("%d",&acao);
+      if(acao==3){
+          mp=mp - 2;
+      }
+  }
+      if(acao==1){
+         dano=D4();
+      }
+      if (acao==3);
+      rolagem=D20();
+      dano=D8();
+ 
+    if(rolagem>=10){
+    HP_inimigo= HP_inimigo - dano;}
+     
+    if(HP_inimigo<=0){
+        printf("O inimigo ficou com 0 de vida\n");
+        return hp;}
+    printf("Você tirou %d no dado, a dificuldade é %d, o hp do inimigo é %d \n",rolagem,teste,HP_inimigo);
+    
+    if(HP_inimigo>0){
+        printf("O inimigo de ataca! o que você faz?1-Esquivar(dificuldade 15) 2-defender\n");
+        scanf("%d", &escolha);
+        esquiva=D20()+modD;
+         if (esquiva>=20){
+                esquiva=20;
+            }
+            if (esquiva<=1){
+                esquiva=1;
+            }
+        ataqueInimigo=D20();
+        
+        if(escolha==1){
+            if(esquiva<15){
+            hp=hp - 1;
+            if(hp<=0){
+                 return hp;
+            }
+            printf("Você tirou %d.Esquiva falhou! Você levou dano. Sua vida atual é %d  \n",esquiva,hp);
+            }
+            else{
+            printf("Você tirou %d.Esquiva bem-sucessedida  \n",esquiva);
+             }}
+             
+        if(escolha==2){
+            defesa=D20()+modF;
+            if (defesa>=20){
+                defesa=20;
+            }
+            if (defesa<=1){
+                defesa=1;
+            }
+        if(ataqueInimigo>defesa){
+                hp= hp - 1;
+                 if(hp<=0){
+                 return hp;}
+                printf("Você tirou %d,o inimigo tirou %d.Você não conseguiu se defender.Seu hp atual é %d \n",defesa,ataqueInimigo,hp);}
+            else{
+                printf("Você tirou %d, o inimigo tirou %d.Sua defesa foi bem-sucessedida! \n",defesa,ataqueInimigo);
+            }}
+        }
+        
+    }
+
+    if(HP_inimigo < 0){
+        vericacao=1;
+}
+    
+    return hp;
+}
+    
+int modificador(int atr){
+     int mod;
+     if(atr==10){
+        mod=0;
+    }
+    if(atr==8 || atr==9){
+        mod=-1;
+    }
+    if(atr==11 || atr==12){
+        mod=1;
+    }
+    if(atr<8){
+        mod=-2;
+    }
+    if(atr>12){
+        mod=2;
+    }
+    return mod;
+}
+    
+int main()
+{
+    char nome[12],classe_e[13];
+    int hpMax,Atributo_f,destreza,constituicao,inteligencia,sabedoria,carisma,hpTemp;
+    int classe_num,i,soma=0,resposta,armadura,vazio,dano,teste,raca,genero;
+    
+    srand(time(NULL));
+    
+    printf("Ficha de Personagem \n");
+    printf("Qual o seu nome, jovem aventureiro? \n");
+    scanf("%s",nome);
+    
+    printf("Qual a sua raça:\n1-Humano\n2-Elfo\n");
+    printf("Qual a sua escolha aventureiro: \n");
+    scanf("%i", &raca);
+    
+    printf("Qual a seu gênero:\n1-Feminino\n2-Masculino \n");
+    printf("Qual sua escolha aventureiro: \n");
+    scanf("%i", &genero);
+    
+    printf("Qual a classe você deseja seguir, jovem aventureiro?\n");
+    printf("1-Guerreiro \n2-ladino \n3-mago \nSua escolha é: \n");
+    scanf("%d",&classe_num);
+    
+    if( classe_num == 1 ){
+        hpMax=10;
+        char classe[13] = "Guerreiro";
+        armadura=3;
+        dano=1;
+        teste=10;
+    }
+    
+    if(classe_num==2){
+    hpMax=8;
+    char classe[13] = "ladino";
+    armadura=2;
+    dano=2;
+    teste=10;
+    }
+    
+    if (classe_num==3){
+    hpMax=6;
+    char classe[13] = "mago";
+    armadura=1;
+    dano=1;
+    teste=10;
+    }
+    hpTemp=hpMax;
+    printf("\nRolagem de atributos!\n");
+    printf("Pressione 1 para continuar.\n");
+    scanf("%d",&vazio);
+    Atributo_f=atributo();
+    printf("\nSeu é atributo de Força é:%d \n",Atributo_f);
+    printf("Pressione 1 para continuar.\n");
+    scanf("%d",&vazio);
+    destreza=atributo();
+    printf("\nSeu é atributo de Destreza é:%d \n",destreza);
+    printf("Pressione 1 para continuar.\n");
+    scanf("%d",&vazio);
+    constituicao=atributo();
+    printf("\nSeu é atributo de Constituicao é:%d \n",constituicao);
+   printf("Pressione 1 para continuar.\n");
+    scanf("%d",&vazio);
+    inteligencia=atributo();
+    printf("\nSeu é atributo de Inteligência é:%d \n",inteligencia);
+    printf("Pressione 1 para continuar.\n");
+    scanf("%d",&vazio);
+    carisma=atributo();
+    printf("\nSeu é atributo de Carisma é:%d \n",carisma);
+     printf("Pressione 1 para continuar.\n");
+    scanf("%d",&vazio);
+    sabedoria=atributo();
+    printf("\nSeu é atributo de Sabedoria é:%d \n",sabedoria);
+   
+    int modF,modD,modI,modS,modCons,acao;
+    
+    // modificador de força
+    modF=modificador(Atributo_f);
+    
+    // modificador de destreza
+    modD=modificador(destreza);
+    
+    modI=modificador(inteligencia);
+    
+    int rolagem,CA;
+    CA=10+armadura+modD;
+    
+    int decisao=0,decisao2,decisao3,decisao4,decisao5=0,decisao6,fim,vitoriaS=0,vitoriaL=0;
+    while(fim!=2){
+    
+    if(vitoriaS==1 || vitoriaL==1){
+        printf("Você retorna para a cidade\n");
+        printf("Você retorna a Cidade de Av2. \nO que deseja fazer\n");
+        if(classe_num==1 || classe_num==2 ||classe_num==3){
+            printf("\n1- Ir para o Norte \n2- Ir para o Sul \n3- Restaurar HP ");
+            scanf("%d",&decisao);}
+            if(decisao==3){
+                hpTemp=hpMax;
+                printf("1- Ir para o Norte \n2- Ir para o Sul");
+                scanf("%d",&decisao);
+            }
+            if(decisao==1 && vitoriaS==1){
+                while(decisao==1){
+                    printf("Você já concluiu esse caminho.Escolha outra opção!");
+                    printf("1- Ir para o Norte \n2- Ir para o Sul ");
+            scanf("%d",&decisao);
+                }
+            }
+            if(decisao==2 && vitoriaL==1){
+                while(decisao==2){
+                    printf("Você já concluiu esse caminho.Escolha outra opção!");
+                    printf("1- Ir para o Norte \n2- Ir para o sul ");
+            scanf("%d",&decisao);
+                }
+            }
+        } 
+        
+    if(vitoriaL==0 && vitoriaS==0){
+    printf("Olá %s, você se encontra na Cidade de AV2, também conhecida como 'Onde Os Alunos Choram'.Você tem duas saídas: \n 1-Norte(Caverna da Neudujo), \n 2-Sul(Bosque da reprovação) \n Qual caminho você seguirá? ", nome);
+    scanf("%d",&decisao);
+    while(decisao<1 || decisao >2 ){
+        printf("Caminho inesxistente! Escolha:\nCaminho-1 \nCaminho-2");
+        scanf("%d",&decisao);
+    }}
+    
+    int HP_inimigo=12,testeAcor;    
+   //cenário 1
+     if(decisao==1){
+        printf("Você se encontra em uma área muito escura. Ventos fortes e barulhentos. Você avista uma caverna.\n " );
+        decisao2=1;
+        
+        if(decisao2==1){
+        printf("Ao entrar você se depara com uma Salamandra de Fogo adormecida.\nVocê pisa em um galho!!!\n");
+        testeAcor=D20();}
+        
+        if(testeAcor>=14){
+        printf("A Salamandra acordou!");
+        hpTemp=combate(HP_inimigo,hpTemp,teste,modD,modI,modF,classe_num);
+        if(hpTemp==0){
+        printf("Você morreu!");
+        return 0;
+    }
+        vitoriaS=1;}
+        else{
+            printf("Ela não acordou. \n ");
+            printf("O que deseja fazer? \n1- Ignorar, \n2- Lutar \n ");
+            scanf("%d",&decisao3);
+            if (decisao3==1){
+            printf("Você está retornando a cidade! \n");
+            continue;
+                }}
+            
+        if(decisao3==2){
+        hpTemp=combate(HP_inimigo,hpTemp,teste,modD,modI,modF,classe_num);
+        if(hpTemp==0){
+        printf("Você morreu!");
+        return 0;
+    }
+        vitoriaS=1;
+        hpMax++;
+        hpTemp++;
+                printf("Parabéns derretou o inimigo!!! \n Você subiu de level (Seu HP máximo aumentou!\n");
+        }
+        
+        if(decisao3==1 || vitoriaS==1){
+        printf("Você continuar prossiguindo na caverna\n");
+        printf("Você encontrou um baú encantado. O que deseja fazer? \n1- Abrir \n2- Retorna a Cidade \n");
+        scanf("%d",&decisao4);
+        }
+        
+        if(decisao4==1){
+            if(vitoriaS==1){
+                printf("Você abriu e obteve a Sun Stone. \n(Esse item te bonifica com HP temporário) \n ");
+                hpMax++;}
+            if(vitoriaS==0){
+                printf("Você tenta abrir mas não consegue, talvez derrotando a Salamandra será possivel abrir o báu.\n ");
+                printf("Você deseja para enfrentar a Salamandra?\n1- Sim \n2- Não \n");
+                scanf("%d",&decisao5);
+                if(decisao5==1);{
+                hpTemp=combate(HP_inimigo,hpTemp,teste,modD,modI,modF,classe_num);
+        if(hpTemp==0){
+        printf("Você morreu!");
+        return 0;
+    }
+                vitoriaS=1;}}}
+                if(decisao4==2){
+                    continue;
+                }
+                if(vitoriaS==1){
+                printf("Você abriu e obteve a sunstone, você recebeu um bonûs de hp temporário\n ");
+                hpMax++;
+                hpTemp++;
+                decisao=0;
+                }}
+        
+    //cenário 2
+    if (decisao==2){
+        HP_inimigo=15;
+        printf("Você avista o Bosque da Reprovação. \n1- Entrar \n2- Retornar a Cidade \n" );
+        scanf("%d",&decisao2);
+    
+    printf("Ao entrar você se depara com um Lobo de Pelagem Negra, muito perigoso que aparentemente está vigiando um baú encantado\n");
+    printf("Você deseja enfrenta-ló? \n 1- Sim \n 2- Retornar a Cidade \n");
+    scanf("%d",&decisao3);   
+    if(decisao3==1){
+    printf("O embate começa!\n");
+    hpTemp=combate(HP_inimigo,hpTemp,teste,modD,modI,modF,classe_num);
+    if(hpTemp==0){
+        printf("Você morreu!");
+        return 0;
+    }
+    vitoriaL=1;
+    
+    if(hpMax<=11){
+    hpMax++;
+    printf("Parabéns derrotou o inimigo!!! \n Você subiu de level (Seu HP máximo aumentou!\n");
+    }
+    printf("Você abriu o baú e obteve a moonstone, você recebeu um bonûs temporário de dano\n ");
+    dano++;
+    decisao=0;
+    }}
+    
+    if(vitoriaL==1 && vitoriaS==1){
+    fim=2;
+     }}
+   
+    printf("Fim");
+
+return 0;
+}
