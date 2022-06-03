@@ -59,43 +59,55 @@ int atributo(){
 
 // função de combate    
 int combate(int HP_inimigo,int hp,int teste,int modD,int modI,int modF,int classe_num){
-  int vericacao=0,acao,escolha,esquiva,ataqueInimigo,defesa,mp=4+modI,dano, rolagem;
-  
-  if(classe_num==1 || classe_num==2){
-  printf("\n");
-  
-  printf("Você encontro um inimigo!O combate começa\n");
-  acao=1;}
-  
-  while (vericacao!=1 && hp>0 && classe_num==1 || classe_num==2){
-   if(classe_num==1){
-      dano=D4();
+     int acao,escolha,esquiva,ataqueInimigo,defesa,mp=4+modI,dano;
+    
+    printf("Você encontro um inimigo!O combate começa!\n");
+    while(HP_inimigo>0 || hp>0){
+        dano=D4();
+    if(classe_num==2){
+            dano=D6();
+        }
+    if(classe_num==3){
+    printf("\n");
+    printf("Como vai atacar?\n1-ataque físico \n2-magia");
+    scanf("%d",&acao);
+    if(acao==2 && mp<=0 && HP_inimigo>0){
+      printf("Sem mana.Use um ataque físico.\n");
+        acao=0;
+        continue;
+    }}
+    if(acao==2){
+    printf("Sua mana atual é %d ",mp);
+    printf("Você pode usar a magia:3-missel mágico(alto dano,-2mp,pode falhar)\n");
+    scanf("%d",&acao);
+      if(acao==3){
+          dano=D8();
+          mp=mp - 2;
+      }
   }
-  if(classe_num==2){
-      dano=D6();
-  }
-    if(acao==1){
-        rolagem=D20();
-        if(rolagem>=teste){
+        
+    rolagem=D20();
+    if(rolagem>=teste){
+            
             if(rolagem==20){
                 printf("CRÍTICO!\n");
                 HP_inimigo=HP_inimigo - (dano * 2);
+                
                 if(HP_inimigo<=0){
                 printf("O inimigo ficou com 0 de vida\n");
-                return hp;
-            }}
+                return hp;}
+                
+            }
             else{
             HP_inimigo= HP_inimigo - dano;
             if(HP_inimigo<=0){
                 printf("O inimigo ficou com 0 de vida\n");
-                return hp;
-            }}}}
-    if(HP_inimigo<=0){
-        printf("O inimigo ficou com 0 de vida\n");
-        return hp;}
+                return hp;}
+            }
+    }
+    
     printf("Você tirou %d no dado, a dificuldade é %d, o hp do inimigo é %d \n",rolagem,teste,HP_inimigo);
-    if(HP_inimigo>0){
-        printf("O inimigo de ataca! o que você faz?1-Esquivar(dificuldade 15) 2-defender\n");
+    printf("O inimigo de ataca! o que você faz?1-Esquivar(dificuldade 15) 2-defender\n");
         scanf("%d", &escolha);
         esquiva=D20()+modD;
          if (esquiva>=20){
@@ -136,114 +148,9 @@ int combate(int HP_inimigo,int hp,int teste,int modD,int modI,int modF,int class
             else{
                 printf("Você tirou %d, o inimigo tirou %d.Sua defesa foi bem-sucessedida! \n",defesa,ataqueInimigo);
             }
-        }}}
-    
-    // mago
-    while (vericacao!=1 && hp>0 && classe_num==3){    
-    acao=0;
-    //ok
-    if(classe_num==3){
-    printf("\n");
-    printf("Como vai atacar?\n1-ataque físico \n2-magia");
-    scanf("%d",&acao);
-    if(acao==2 && mp<=0 && HP_inimigo>0){
-      printf("Sem mana.Será usado um ataque físico.\n");
-        acao= 1;}}
-    //ok
-    
-    //ok
-    if( acao==1){
-        dano=D4();
-        rolagem=D20();
-        if(rolagem>=teste){
-            if(rolagem==20){
-                printf("CRÍTICO!\n");
-                HP_inimigo=HP_inimigo - (dano * 2);
-                if(HP_inimigo<=0){
-                printf("O inimigo ficou com 0 de vida\n");
-                return hp;} 
-            }
-            else{
-            HP_inimigo= HP_inimigo - dano;
-            if(HP_inimigo<=0){
-                printf("O inimigo ficou com 0 de vida\n");
-                return hp;}
-                }
-                }
-    }
-    //ok
-    
-    if(acao==2){
-    printf("Sua mana atual é %d ",mp);
-    printf("Você pode usar a magia:3-missel mágico(alto dano,-2mp,pode falhar)\n");
-    scanf("%d",&acao);
-      if(acao==3){
-          mp=mp - 2;
-      }
-  }
-      if(acao==1){
-         dano=D4();
-      }
-      if (acao==3){
-      rolagem=D20();
-      dano=D8();}
- 
-    if(rolagem>=10){
-    HP_inimigo= HP_inimigo - dano;}
-     
-    if(HP_inimigo<=0){
-        printf("O inimigo ficou com 0 de vida\n");
-        return hp;}
-    printf("Você tirou %d no dado, a dificuldade é %d, o hp do inimigo é %d \n",rolagem,teste,HP_inimigo);
-    
-    if(HP_inimigo>0){
-        printf("O inimigo de ataca! o que você faz?1-Esquivar(dificuldade 15) 2-defender\n");
-        scanf("%d", &escolha);
-        esquiva=D20()+modD;
-         if (esquiva>=20){
-                esquiva=20;
-            }
-            if (esquiva<=1){
-                esquiva=1;
-            }
-        ataqueInimigo=D20();
-        
-        if(escolha==1){
-            if(esquiva<15){
-            hp=hp - 1;
-            if(hp<=0){
-                 return hp;
-            }
-            printf("Você tirou %d.Esquiva falhou! Você levou dano. Sua vida atual é %d  \n",esquiva,hp);
-            }
-            else{
-            printf("Você tirou %d.Esquiva bem-sucessedida  \n",esquiva);
-             }}
-             
-        if(escolha==2){
-            defesa=D20()+modF;
-            if (defesa>=20){
-                defesa=20;
-            }
-            if (defesa<=1){
-                defesa=1;
-            }
-        if(ataqueInimigo>defesa){
-                hp= hp - 1;
-                 if(hp<=0){
-                 return hp;}
-                printf("Você tirou %d,o inimigo tirou %d.Você não conseguiu se defender.Seu hp atual é %d \n",defesa,ataqueInimigo,hp);}
-            else{
-                printf("Você tirou %d, o inimigo tirou %d.Sua defesa foi bem-sucessedida! \n",defesa,ataqueInimigo);
-            }}
         }
         
     }
-
-    if(HP_inimigo < 0){
-        vericacao=1;
-}
-    
     return hp;
 }
     
