@@ -38,13 +38,8 @@ int D8(void){
 // essa função considera a distribuição dos pontos como a rolagem de 4 d6,somando todos os valores e subtraindo o menor
 int atributo(){
      int menor=0,dado=0,i,soma=0;
-    srand(time(NULL));
     for(i=0;i<4;i++){
-        dado = rand() % 7;
-        if(dado==0){
-        while(dado==0){
-        dado = rand() % 7;
-        }}
+        dado = D6();
         soma=soma+dado;
         if(i==0){
             menor=dado;
@@ -177,7 +172,7 @@ int modificador(int atr){
 int main(){
     char nome[20],vazio;
     int hpMax,destreza,constituicao,inteligencia,sabedoria,carisma,hpTemp;
-    int classe_num,soma=0,resposta,dano,raca,genero,forca;
+    int classe_num,resposta,dano,raca,genero,forca;
     
     srand(time(NULL));
     printf("Ficha de Personagem \n");
@@ -271,6 +266,7 @@ int main(){
     
     printf("\n");
     int decisao=0,decisao2,decisao3,decisao4,decisao5=0,decisao6,fim,vitoriaS=0,vitoriaL=0;
+    hpTemp=hpMax;
     while(fim!=2){
     
     if(vitoriaS==1 || vitoriaL==1){
@@ -354,9 +350,11 @@ int main(){
         return 0;
     }
         vitoriaS=1;
+        if (vitoriaL==0){
         hpMax++;
         hpTemp++;
-                printf("Parabéns derrotou o inimigo!!! \n Você subiu de level (Seu HP máximo aumentou!\n");
+        printf("Parabéns derrotou o inimigo!!! \n Você subiu de level (Seu HP máximo aumentou!\n");
+        }
         }
         
         if(decisao3==1 || vitoriaS==1){
@@ -390,14 +388,20 @@ int main(){
         printf("Você morreu!");
         return 0;
     }
-                vitoriaS=1;}}
+        vitoriaS=1;
+        if (vitoriaL==0){
+        hpMax++;
+        hpTemp++;
+        printf("Parabéns derrotou o inimigo!!! \n Você subiu de level (Seu HP máximo aumentou!\n");
+        }
+                }}
             
         }
-                if(decisao4==2){
-                    vitoriaS=0;
-                    printf("O item é essencial pra a conclusão,volte para pega-ló mais tarde!\n");
-                    printf("Você retornou a cidade\n");
-                    continue;
+        if(decisao4==2){
+        vitoriaS=0;
+        printf("O item é essencial pra a conclusão,volte para pega-ló mais tarde!\n");
+        printf("Você retornou a cidade\n");
+        continue;
                 }}
         
     //cenário 2
@@ -418,7 +422,7 @@ int main(){
     }
     vitoriaL=1;
     
-    if(hpMax<=11){
+    if(vitoriaS==1){
     hpMax++;
     printf("Parabéns derrotou o inimigo!!! \n Você subiu de level (Seu HP máximo aumentou!\n");
     }
@@ -440,5 +444,3 @@ int main(){
 
 return 0;
 }
-
-   
