@@ -409,6 +409,10 @@ int main(){
         HP_inimigo=15;
         printf("Você avista o Bosque da Reprovação. \n1- Entrar \n2- Retornar a Cidade \n" );
         scanf("%d",&decisao2);
+        if(decisao2==2){
+        printf("Você retorna a Cidade\n");
+        continue;
+    }
     
     printf("Ao entrar você se depara com um Lobo de Pelagem Negra, muito perigoso que aparentemente está vigiando um baú encantado\n");
     printf("Você deseja enfrenta-ló? \n 1- Sim \n 2- Retornar a Cidade \n");
