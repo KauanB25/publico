@@ -409,6 +409,11 @@ int main(){
         HP_inimigo=15;
         printf("Você avista o Bosque da Reprovação. \n1- Entrar \n2- Retornar a Cidade \n" );
         scanf("%d",&decisao2);
+        while(decisao2<1 || decisao2>2){
+        printf("Opção inválida!\n");
+        printf("Escolha entre \n 1- Entrar \n2- Retornar a Cidade \n");
+         scanf("%d",&decisao2);
+    }
         if(decisao2==2){
         printf("Você retorna a Cidade\n");
         continue;
