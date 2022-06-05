@@ -64,16 +64,16 @@ int combate(int HP_inimigo,int hp,int modD,int modI,int modF,int classe_num){
         }
     if(classe_num==3){
     printf("\n");
-    printf("Como vai atacar?\n1-ataque físico \n2-magia");
+    printf("Como vai atacar?\n1-Ataque Físico \n2-Magia");
     scanf("%d",&acao);
     if(acao==2 && mp<=0 && HP_inimigo>0){
-      printf("Sem mana.Use um ataque físico.\n");
+      printf("Sem mana.Use um Ataque Físico.\n");
         acao=0;
         continue;
     }}
     if(acao==2){
     printf("Sua mana atual é %d ",mp);
-    printf("Você pode usar a magia:3-missel mágico(alto dano,-2mp,pode falhar)\n");
+    printf("Você pode usar a magia: \n3-Missel Mágico (Alto Dano,-2mp. Pode falhar)\n");
     scanf("%d",&acao);
       if(acao==3){
           dano=D8();
@@ -102,7 +102,7 @@ int combate(int HP_inimigo,int hp,int modD,int modI,int modF,int classe_num){
     }
     
     printf("Você tirou %d no dado, a dificuldade é %d, o hp do inimigo é %d \n",rolagem,teste,HP_inimigo);
-    printf("O inimigo de ataca! o que você faz?1-Esquivar(dificuldade 15) 2-defender\n");
+    printf("O inimigo de ataca! o que você faz?\n1-Esquivar(dificuldade 15) \n2-Defender\n");
         scanf("%d", &escolha);
         esquiva=D20()+modD;
          if (esquiva>=20){
@@ -270,8 +270,7 @@ int main(){
     while(fim!=2){
     
     if(vitoriaS==1 || vitoriaL==1){
-        printf("Você retorna para a cidade\n");
-        printf("Você retorna a Cidade de Av2. \nO que deseja fazer\n");
+                printf("Você retorna a Cidade de Av2. \nO que deseja fazer\n");
         printf("\n1- Ir para o Norte \n2- Ir para o Sul \n3- Restaurar HP ");
         scanf("%d",&decisao);
         while(decisao<1 || decisao>3){
@@ -281,7 +280,7 @@ int main(){
         }
             if(decisao==3){
                 hpTemp=hpMax;
-                printf("Hp restaurado!");
+                printf("Hp restaurado!\n");
                 printf("1- Ir para o Norte \n2- Ir para o Sul");
                 scanf("%d",&decisao);
             }
@@ -337,8 +336,8 @@ int main(){
             printf("O que deseja fazer? \n1- Ignorar, \n2- Lutar \n ");
             scanf("%d",&decisao3);
             while(decisao3<1 || decisao3>2){
-            printf("Opção inválida escolha entre");
-            printf(" 1- Ignorar, \n2- Lutar \n ");
+            printf("Opção inválida escolha entre\n");
+            printf("1- Ignorar, \n2- Lutar \n ");
             scanf("%d",&decisao3);
             }
            }
@@ -353,7 +352,7 @@ int main(){
         if (vitoriaL==0){
         hpMax++;
         hpTemp++;
-        printf("Parabéns derrotou o inimigo!!! \n Você subiu de level (Seu HP máximo aumentou!\n");
+        printf("Parabéns derrotou o inimigo!!! \n Você subiu de level (Seu HP máximo aumentou!) \n");
         }
         }
         
@@ -363,7 +362,7 @@ int main(){
         scanf("%d",&decisao4);
         while(decisao4<1 || decisao4>2){
             printf("Opção inválida escolha entre");
-            printf(" 1- Ignorar, \n2- Retorna a Cidade\n ");
+            printf("\n1- Ignorar, \n2- Retorna a Cidade\n ");
             scanf("%d",&decisao4);
             }
         }
@@ -379,7 +378,7 @@ int main(){
                 scanf("%d",&decisao5);
                 while(decisao5<1 || decisao5>2){
                     printf("Opção inválida. Escolha entre ");
-                    printf("1- Sim \n2- Não \n");
+                    printf("\n1- Sim \n2- Não \n");
                     scanf("%d",&decisao5);
                 }
                 if(decisao5==1);{
@@ -392,7 +391,7 @@ int main(){
         if (vitoriaL==0){
         hpMax++;
         hpTemp++;
-        printf("Parabéns derrotou o inimigo!!! \n Você subiu de level (Seu HP máximo aumentou!\n");
+        printf("Parabéns derrotou o inimigo!!! \n Você subiu de level (Seu HP máximo aumentou!) \n");
         }
                 }}
             
